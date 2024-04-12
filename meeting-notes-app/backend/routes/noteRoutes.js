@@ -28,6 +28,25 @@ router.post('/', async (req, res) => {
     }
 });
 
-// Additional routes for updating and deleting notes can be similarly defined
+// Update an existing note
+router.put('/:id', async (req, res) => {
+    try {
+        const { title, content, actionItems } = req.body;
+        const updatedNote = await Note.findByIdAndUpdate(
+            req.params.id,
+            { title, content, actionItems },
+            { new: true, runValidators: true }
+        );
+
+        if (!updatedNote) {
+            return res.status(404).json({ message: "Note not found with provided ID" });
+        }
+        res.json(updatedNote);
+    } catch (err) {
+        res.status(400).json({ message: err.message });
+    }
+});
+
+
 
 module.exports = router;
