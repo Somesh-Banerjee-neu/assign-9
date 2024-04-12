@@ -47,6 +47,17 @@ router.put('/:id', async (req, res) => {
     }
 });
 
-
+// Delete a note
+router.delete('/:id', async (req, res) => {
+    try {
+        const note = await Note.findByIdAndDelete(req.params.id);
+        if (!note) {
+            return res.status(404).json({ message: "Note not found with provided ID" });
+        }
+        res.json({ message: "Note successfully deleted" });
+    } catch (err) {
+        res.status(400).json({ message: err.message });
+    }
+});
 
 module.exports = router;
